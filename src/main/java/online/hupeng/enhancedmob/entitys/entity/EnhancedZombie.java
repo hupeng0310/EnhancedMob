@@ -1,15 +1,34 @@
 package online.hupeng.enhancedmob.entitys.entity;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EnhancedZombie extends Zombie {
     public EnhancedZombie(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
+        if (this.level.getDifficulty() == Difficulty.EASY) {
+            this.xpReward = 10;
+        } else if (this.level.getDifficulty() == Difficulty.NORMAL) {
+            this.xpReward = 20;
+        } else if (this.level.getDifficulty() == Difficulty.HARD) {
+            this.xpReward = 25;
+        }
     }
 
     /**
@@ -26,6 +45,41 @@ public class EnhancedZombie extends Zombie {
     @Override
     protected boolean isSunBurnTick() {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor,
+                                        @NotNull DifficultyInstance difficultyInstance,
+                                        @NotNull MobSpawnType mobSpawnType,
+                                        @Nullable SpawnGroupData spawnGroupData,
+                                        @Nullable CompoundTag compoundTag) {
+        SpawnGroupData superSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+        ItemStack mainHandItem = ItemStack.EMPTY;
+        ItemStack helmet = ItemStack.EMPTY;
+        if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.EASY) {
+            mainHandItem = new ItemStack(Items.IRON_SWORD);
+        } else if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.NORMAL) {
+            mainHandItem = new ItemStack(Items.IRON_AXE);
+            if (serverLevelAccessor.getRandom().nextDouble() < 0.5D) {
+                helmet = new ItemStack(Items.IRON_HELMET);
+            }
+        } else if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.HARD) {
+            mainHandItem = new ItemStack(Items.DIAMOND_SWORD);
+            helmet = new ItemStack(Items.IRON_HELMET);
+            this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
+            this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
+            this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+            if (serverLevelAccessor.getRandom().nextDouble() < 0.2D) {
+                mainHandItem.enchant(Enchantments.SHARPNESS, serverLevelAccessor.getRandom().nextInt(3) + 1);
+            }
+            if (serverLevelAccessor.getRandom().nextDouble() < 0.5D) {
+                helmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, serverLevelAccessor.getRandom().nextInt(1) + 1);
+            }
+        }
+        this.setItemInHand(InteractionHand.MAIN_HAND, mainHandItem);
+        this.setItemSlot(EquipmentSlot.HEAD, helmet);
+        return superSpawnGroupData;
     }
 
     /**
