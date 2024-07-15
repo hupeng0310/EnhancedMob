@@ -1,6 +1,7 @@
 package online.hupeng.enhancedmob.entitys.entity;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import online.hupeng.enhancedmob.EnhancedMob;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,6 +85,11 @@ public class EnhancedZombie extends Zombie {
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, mainHandItem);
         this.setItemSlot(EquipmentSlot.HEAD, helmet);
+    }
+
+    @Override
+    public @NotNull ResourceLocation getDefaultLootTable() {
+        return new ResourceLocation(EnhancedMob.MODID, "enhanced_zombie");
     }
 
     /**
