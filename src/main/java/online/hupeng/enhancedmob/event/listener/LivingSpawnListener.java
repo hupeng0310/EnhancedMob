@@ -18,12 +18,14 @@ public class LivingSpawnListener {
         Mob entity = event.getEntity();
         if (entity.getClass() == Zombie.class) {
             Zombie zombie = (Zombie) entity;
-            if (zombie.getLevel().random.nextDouble() < 0.1D) {
+            if (!zombie.getTags().contains("not_enhanced") && event.getLevel().getRandom().nextDouble() < 0.1D) {
                 EnhancedZombie enhancedZombie = zombie.convertTo(EnhancedEntityType.ENHANCE_ZOMBIE.get(), true);
                 if (enhancedZombie == null) {
                     throw new RuntimeException("Failed to convert zombie to enhanced zombie");
                 }
                 enhancedZombie.generateEquipments();
+            } else {
+                zombie.addTag("not_enhanced");
             }
         }
     }
