@@ -54,32 +54,35 @@ public class EnhancedZombie extends Zombie {
                                         @NotNull MobSpawnType mobSpawnType,
                                         @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag compoundTag) {
-        SpawnGroupData superSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+        this.generateEquipments();
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    public void generateEquipments() {
         ItemStack mainHandItem = ItemStack.EMPTY;
         ItemStack helmet = ItemStack.EMPTY;
-        if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.EASY) {
+        if (this.getLevel().getDifficulty() == Difficulty.EASY) {
             mainHandItem = new ItemStack(Items.IRON_SWORD);
-        } else if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.NORMAL) {
+        } else if (this.getLevel().getDifficulty() == Difficulty.NORMAL) {
             mainHandItem = new ItemStack(Items.IRON_AXE);
-            if (serverLevelAccessor.getRandom().nextDouble() < 0.5D) {
+            if (this.getRandom().nextDouble() < 0.5D) {
                 helmet = new ItemStack(Items.IRON_HELMET);
             }
-        } else if (serverLevelAccessor.getLevel().getDifficulty() == Difficulty.HARD) {
+        } else if (this.getLevel().getDifficulty() == Difficulty.HARD) {
             mainHandItem = new ItemStack(Items.DIAMOND_SWORD);
             helmet = new ItemStack(Items.IRON_HELMET);
             this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
             this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
             this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
-            if (serverLevelAccessor.getRandom().nextDouble() < 0.2D) {
-                mainHandItem.enchant(Enchantments.SHARPNESS, serverLevelAccessor.getRandom().nextInt(3) + 1);
+            if (this.getRandom().nextDouble() < 0.2D) {
+                mainHandItem.enchant(Enchantments.SHARPNESS, this.getRandom().nextInt(3) + 1);
             }
-            if (serverLevelAccessor.getRandom().nextDouble() < 0.5D) {
-                helmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, serverLevelAccessor.getRandom().nextInt(1) + 1);
+            if (this.getRandom().nextDouble() < 0.5D) {
+                helmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, this.getRandom().nextInt(1) + 1);
             }
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, mainHandItem);
         this.setItemSlot(EquipmentSlot.HEAD, helmet);
-        return superSpawnGroupData;
     }
 
     /**
