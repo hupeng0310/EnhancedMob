@@ -38,5 +38,6 @@ public class EnhancedMob {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
+        LOGGER.info("Load mod EnhancedMob on the server side");
     }
 }
