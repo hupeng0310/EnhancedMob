@@ -30,10 +30,10 @@ public class LivingSpawnListener {
                         throw new RuntimeException("Failed to convert zombie to enhanced zombie");
                     }
                     enhancedZombie.generateEquipments();
+                    return;
                 }
-            } else {
-                zombie.addTag("not_enhanced");
             }
+            zombie.addTag("not_enhanced");
         }
     }
 }
