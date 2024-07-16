@@ -60,6 +60,11 @@ public class EnhancedZombie extends Zombie {
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
+    @Override
+    protected boolean convertsInWater() {
+        return false;
+    }
+
     public void generateEquipments() {
         ItemStack mainHandItem = ItemStack.EMPTY;
         ItemStack helmet = ItemStack.EMPTY;
