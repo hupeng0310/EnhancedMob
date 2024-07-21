@@ -103,8 +103,8 @@ public class EnhancedZombie extends Zombie {
     public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Zombie.createAttributes()
                 .add(Attributes.FOLLOW_RANGE, 64)
-                .add(Attributes.MOVEMENT_SPEED, 0.35D)
-                .add(Attributes.MAX_HEALTH, 40.0D);
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.MAX_HEALTH, 50.0D);
     }
 
 }
