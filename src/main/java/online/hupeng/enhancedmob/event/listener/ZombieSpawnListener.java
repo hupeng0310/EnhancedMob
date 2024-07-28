@@ -12,7 +12,7 @@ import online.hupeng.enhancedmob.entitys.EnhancedEntityType;
 import online.hupeng.enhancedmob.entitys.entity.EnhancedZombie;
 import org.slf4j.Logger;
 
-@Mod.EventBusSubscriber(modid = EnhancedMob.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.DEDICATED_SERVER)
+@Mod.EventBusSubscriber(modid = EnhancedMob.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZombieSpawnListener {
 
     private static final Logger LOGGER = LogUtils.getLogger();
